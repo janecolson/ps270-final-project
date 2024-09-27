@@ -1,0 +1,10 @@
+---
+title: "PS 270 Final Project"
+author: "Jane C. Olson"
+date: "`r Sys.Date()`"
+description: "My final project"
+output: pdf_document
+---
+
+##
+I am interested in looking at data comparing reception of ads made in support of a political candidate vs ads that candidate makes against his or her opponent.
