@@ -6,5 +6,6 @@ description: "My final project"
 output: pdf_document
 ---
 
-##
+## Project Thoughts
+
 I am interested in looking at data comparing reception of ads made in support of a political candidate vs ads that candidate makes against his or her opponent.
