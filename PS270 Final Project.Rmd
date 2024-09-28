@@ -3,9 +3,11 @@ title: "PS 270 Final Project"
 author: "Jane C. Olson"
 date: "`r Sys.Date()`"
 description: "My final project"
-output: pdf_document
+output:
+  distill::distill_article:
+    sel_contained: false
 ---
 
 ## Project Thoughts
 
-I am interested in looking at data comparing reception of ads made in support of a political candidate vs ads that candidate makes against his or her opponent. I am curious as to what type of ad leaves a better impression on voters: ads speaking positively of the candidate or ads speaking negatively of the opposing candidate. I hope to see this through election data.
+I am interested in looking at data comparing reception of ads made in support of a political candidate vs ads that candidate makes against his or her opponent. I am curious as to what type of ad leaves a better impression on voters: ads speaking positively of the candidate or ads speaking negatively of the opposing candidate. I hope to see this through election data and results.
