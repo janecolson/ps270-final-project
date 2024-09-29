@@ -1,5 +1,5 @@
 ---
-title: "PS 270 Final Project"
+title: "PS270 Final Project"
 author: "Jane C. Olson"
 date: "`r Sys.Date()`"
 description: "My final project"
