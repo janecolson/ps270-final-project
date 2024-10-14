@@ -11,7 +11,7 @@ output:
 
 ## Project thoughts
 
-I am interested in exploring data related to reception of ads made in support of a political candidate vs ads that candidate makes against his or her opponent. I am curious as to what type of ad leaves a better impression on voters: ads speaking positively of the candidate or ads speaking negatively of the opposing candidate. I hope to see this through election data and results.
+I am interested in exploring data related to how accessibility to polling places influences voter turnout in elections in the United States. I am curious as to whether or not closing more polling places leads to an increase or decrease in those who vote.
 
 ## Tentative Proposal
 
