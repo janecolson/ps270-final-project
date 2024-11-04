@@ -115,7 +115,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["index_files/anchor-4.2.2/anchor.min.js","index_files/bowser-1.9.3/bowser.min.js","index_files/distill-2.2.21/template.v2.js","index_files/header-attrs-2.17/header-attrs.js","index_files/header-attrs-2.28/header-attrs.js","index_files/jquery-3.6.0/jquery-3.6.0.js","index_files/jquery-3.6.0/jquery-3.6.0.min.js","index_files/jquery-3.6.0/jquery-3.6.0.min.map","index_files/popper-2.6.0/popper.min.js","index_files/tippy-6.2.7/tippy-bundle.umd.min.js","index_files/tippy-6.2.7/tippy-light-border.css","index_files/tippy-6.2.7/tippy.css","index_files/tippy-6.2.7/tippy.umd.min.js","index_files/webcomponents-2.0.0/webcomponents.js","PS270-Final-Project.html","PS270-Final-Project.pdf"]}
+  {"type":"character","attributes":{},"value":["final-data/codebook_ppeg_pres_2024v1.pdf","final-data/ppeg_pres_2024v1.csv","final-data/ppeg_pres_2024v1.dta","final-data/ppeg_pres_2024v1.rds","index_files/anchor-4.2.2/anchor.min.js","index_files/bowser-1.9.3/bowser.min.js","index_files/distill-2.2.21/template.v2.js","index_files/figure-html5/unnamed-chunk-1-1.png","index_files/header-attrs-2.17/header-attrs.js","index_files/header-attrs-2.28/header-attrs.js","index_files/jquery-3.6.0/jquery-3.6.0.js","index_files/jquery-3.6.0/jquery-3.6.0.min.js","index_files/jquery-3.6.0/jquery-3.6.0.min.map","index_files/popper-2.6.0/popper.min.js","index_files/tippy-6.2.7/tippy-bundle.umd.min.js","index_files/tippy-6.2.7/tippy-light-border.css","index_files/tippy-6.2.7/tippy.css","index_files/tippy-6.2.7/tippy.umd.min.js","index_files/webcomponents-2.0.0/webcomponents.js","PS270-Final-Project.html","PS270-Final-Project.pdf"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -1547,6 +1547,27 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <p>I am interested in exploring data related to how accessibility to polling places influences voter turnout in elections in the United States. I am curious as to whether or not closing more polling places leads to an increase or decrease in those who vote.</p>
 <h2 id="tentative-proposal">Tentative Proposal</h2>
 <p>Does closure of polling places in the U.S. decrease participation in elections? In this study, I plan to examine voter turnout from 2012 to 2018 versus 2020, when many polling places closed due to COVID-19. I hypothesize that in areas where most polling places are closed there is a lesser amount of voter turnout than areas that have more open polling places. When more polling places are closed, I suspect that it is less likely for people to vote. When less polling places are closed, I suspect that it is more likely for people to vote. My sample is comprised of data on polling locations used in 30 states from 2012 to 2020. My unit of analysis is data on polling locations used in 30 states from one of the 2012 to 2020 elections (e.g., the 2018 general election). The explanatory variable of interest is whether a city has multiple options for polling locations for voter (has more than one polling location open) or if it does not have multiple options for voters (only has one polling locations open). The variable is coded =1 for multiple polling locations open and =0 for only one polling location open. My outcome variable is the count of voters who show up at a polling place for a general election. For instance, if the variable were coded =1342, it would mean that 1342 voters showed up to a polling place for that general election. This variable is measured from Pratheek Rebala’s data set on U.S. polling places from 2012 to 2020. If I observe a greater amount of voters at a polling place in a city with multiple polling places open, this would provide support for my hypothesis. If, on the other hand, I observe a lesser amount of voters or the same amount at a polling place in a city with multiple polling places open, this would provide evidence against my hypothesis. When I run my regression of the count of voters at a polling place for a general election on the multiple polling locations variable, a positive, significant coefficient would indicate support for my hypothesis.</p>
+<h2 id="data-visualization">Data Visualization</h2>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span>
+<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span></span>
+<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://readr.tidyverse.org'>readr</a></span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>ppeg_pres_2024v1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_csv</a></span><span class='op'>(</span><span class='st'>"final-data/ppeg_pres_2024v1.csv"</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>ppeg_pres</span> <span class='op'>&lt;-</span> <span class='va'>ppeg_pres_2024v1</span></span>
+<span></span>
+<span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>ppeg_pres</span>,</span>
+<span>       mapping <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>electorate_lastround</span>,</span>
+<span>                     y <span class='op'>=</span> <span class='va'>total_vote_lastround</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_point.html'>geom_point</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='st'>"Number of Eligible Voters"</span>,</span>
+<span>       y <span class='op'>=</span> <span class='st'>"Total Number of Votes Cast"</span>,</span>
+<span>       title <span class='op'>=</span> <span class='st'>"Number of Votes Cast by Eligible Voters"</span><span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="index_files/figure-html5/unnamed-chunk-1-1.png" width="624" /></p>
+</div>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
