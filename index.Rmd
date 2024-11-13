@@ -11,7 +11,7 @@ output:
 
 ## Project thoughts
 
-I am interested in exploring data related to how accessibility to polling places influences voter turnout in elections in the United States. I am curious as to whether or not closing more polling places leads to an increase or decrease in those who vote.
+I am interested in looking at data analyzing what parties American voters tend to say they prefer in presidential elections as they come closer to the election. I am curious as to whether or not voters tend to favor a certain party in the beginning of the election cycle versus the period nearest to the election. I hope to see this through American presidential pre-election polls.
 
 ## Tentative Proposal
 
