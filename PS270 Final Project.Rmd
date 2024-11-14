@@ -10,7 +10,7 @@ output:
 
 ## Project Thoughts
 
-I am interested in looking at data comparing reception of ads made in support of a political candidate vs ads that candidate makes against his or her opponent. I am curious as to what type of ad leaves a better impression on voters: ads speaking positively of the candidate or ads speaking negatively of the opposing candidate. I hope to see this through election data and results.
+I am interested in looking at data analyzing what parties American voters tend to say they prefer in presidential elections as they come closer to the election. I am curious as to whether or not voters tend to favor a certain party in the beginning of the election cycle versus the period nearest to the election. I hope to see this through American presidential pre-election polls.
 
 ## Tentative Proposal
 
