@@ -21,20 +21,25 @@ Are American voters more attracted to a certain party as the presidential electi
 
 ```{r}
 library(tidyverse)
-library(dplyr)
-library(readr)
+us_pres_polls_2016 <- read_tsv("final-data/Dataset-20180111.tab") |>
+  filter(country == "United States",
+         election == "Presidential",
+         electionyr == "2016")
 
-ppeg_pres_2024v1 <- read_csv("final-data/ppeg_pres_2024v1.csv")
-
-ppeg_pres <- ppeg_pres_2024v1
-
-ggplot(data = ppeg_pres,
-       mapping = aes(x = electorate_lastround,
-                     y = total_vote_lastround)) +
-  geom_point() +
-  labs(x = "Number of Eligible Voters",
-       y = "Total Number of Votes Cast",
-       title = "Number of Votes Cast by Eligible Voters")
+pres_2016_plot <- ggplot(us_pres_polls_2016, mapping = aes(x = polldate,
+                                                                y = poll_)) +
+  geom_point(mapping = aes(color = partyid)) +
+  facet_wrap(~ partyid) +
+  labs(
+        x = "Date of Poll",
+        y = "Predicted Percentage of Votes",
+        title = "Expected Percentage of Votes for Each Candidate",
+        subtitle = "Based on Dates of Polls",
+        caption = "Will Jennings & Christopher Wlezien"
+      ) +
+  theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+  panel.grid.minor = element_blank())
+pres_2016_plot
 ```
 
 
