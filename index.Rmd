@@ -33,7 +33,7 @@ pres_2016_plot <- ggplot(us_pres_polls_2016, mapping = aes(x = polldate,
   labs(
         x = "Date of Poll",
         y = "Predicted Percentage of Votes",
-        title = "Expected Percentage of Votes for Each Candidate",
+        title = "Expected Percentage of Votes for Each 2016 Presidential Candidate",
         subtitle = "Based on Dates of Polls",
         caption = "Will Jennings & Christopher Wlezien"
       ) +
@@ -42,7 +42,32 @@ pres_2016_plot <- ggplot(us_pres_polls_2016, mapping = aes(x = polldate,
 pres_2016_plot
 ```
 
+## Analysis
 
+The graphs below show that as the time between the 2012 election and polling decreased, the amount of votes predicted for both the Democratic and Republican candidates increased. This indicates that support did not shift toward one individual candidate and instead, support in the polls increased because of other factors. One of these factors could be that the amount of polls taken increased as the amount of days until the election decreased, so there were more opportunities for those included in the polls to say they planned to vote for either the Democratic or Republican candidate.
+
+```{r}
+us_pres_polls_2012 <- read_tsv("final-data/Dataset-20180111.tab") |>
+  filter(country == "United States",
+         election == "Presidential",
+         electionyr == "2012")
+
+pres_2012_plot <- ggplot(us_pres_polls_2012, mapping = aes(x = polldate,
+                                                                y = poll_)) +
+  geom_point(mapping = aes(color = partyid)) +
+  facet_wrap(~ partyid) +
+  labs(
+        x = "Date of Poll",
+        y = "Predicted Percentage of Votes",
+        title = "Expected Percentage of Votes for Each 2012 Presidential Candidate",
+        subtitle = "Based on Dates of Polls",
+        caption = "Will Jennings & Christopher Wlezien"
+      ) +
+  geom_smooth(color = "red") +
+  theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+  panel.grid.minor = element_blank())
+pres_2012_plot
+```
 
 
 
