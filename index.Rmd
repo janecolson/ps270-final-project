@@ -44,7 +44,7 @@ pres_2016_plot
 
 ## Analysis
 
-The graphs below show that as the time between the 2012 election and polling decreased, the amount of votes predicted for both the Democratic and Republican candidates increased. This indicates that support did not shift toward one individual candidate and instead, support in the polls increased because of other factors. One of these factors could be that the amount of polls taken increased as the amount of days until the election decreased, so there were more opportunities for those included in the polls to say they planned to vote for either the Democratic or Republican candidate.
+The graph below shows that as the time between the 2012 election and polling decreased, the amount of votes predicted for both the Democratic and Republican candidates increased. This indicates that support did not shift toward one individual candidate and instead, support in the polls increased because of other factors. One of these factors could be that the amount of polls taken increased as the amount of days until the election decreased, so there were more opportunities for those included in the polls to say they planned to vote for either the Democratic or Republican candidate.
 
 ```{r}
 us_pres_polls_2012 <- read_tsv("final-data/Dataset-20180111.tab") |>
