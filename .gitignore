@@ -3,3 +3,4 @@
 .RData
 .Ruserdata
 *final-data/Dataset-20180111.tab
+*.DS_Store
