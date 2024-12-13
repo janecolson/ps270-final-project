@@ -1,7 +1,7 @@
 ---
 title: "PS270 Final Project"
 author: "Jane C. Olson"
-description: "My final project"
+description: "Voter Behavior Over Time"
 output:
   distill::distill_article:
     self_contained: false
@@ -69,7 +69,63 @@ pres_2012_plot <- ggplot(us_pres_polls_2012, mapping = aes(x = polldate,
 pres_2012_plot
 ```
 
+## Introduction
 
+  Are American voters more attracted to the future winner as the presidential election comes closer? In this study, I plan to examine pre-election polls regarding American presidential elections.  I hypothesize that as a presidential election draws nearer, a greater amount of polls will favor the candidate who ends up winning the election.  The null hypothesis is that how close the poll was taken to the election does not impact the amount of votes the future winner is predicted to get.  When there is more time between polls and the presidential election, I suspect that polls will be more spread out in their predictions of whether or not the future winner will be elected.  This report is interesting because it shows how voters' intentions change over time; in addition, it shows how often the polls correctly predict the winner of the election. This can be useful to politicians, as they can use this information to see how effective campaigning is and determine where they should focus their efforts, as well as the likelihood of winning an election based on what the polls predict. This can also be useful to voters, as it can help them predict who will win, perhaps mobilizing them if the candidate they do not prefer is predicted to win, as well as help them prepare for the predicted winner to take office.
+
+## Data
+
+  The data used for this report is a data set from a project led by principal investigators Will Jennings of the University of Southampton and Christopher Wlezien of the University of Texas at Austin.  The data set consists of over 30,000 pre-election polls in national elections from 45 countries since 1942 to the present, collected from survey organizations.  My sample is comprised of pre-election polls from American presidential elections between 1952 and 2017 that ask which candidate the respondent intended to vote for; the Democratic candidate is recorded as candidate 1 and the Republican candidate is recorded as candidate 2.
+   My unit of analysis is the results of the pre-election polls from one of the elections between 1952 and 2017 (e.g., the 2016 presidential election).  The explanatory variable of interest/independent variable is the amount of days away from the election the poll is taken.  The variable is coded in accordance with the amount of days before the election day.  For instance, if the variable were coded =1462, it would mean that the poll was taken 1,462 days before election day.  My outcome variable/dependent variable is the the amount of votes the future winner is expected to get according to the polls. The variable is coded =0.01 for 1% of votes, =0.02 for 2% of votes, etc.  This variable is measured from Christopher Wlezien's data set on national polls assessing citizens' vote intentions in 45 countries between 1942 and 2017. If I observe a greater amount of polls predicting the future winner of the election to win the election closer to the election date, this would provide support for my hypothesis. If, on the other hand, I observe less or the same amounts of polls predicting the future winner to win, this would provide evidence against my hypothesis. When I run my regression of the predictions of pre-election polls on the days before election day variable, a positive, significant coefficient close to 1 would indicate support for my hypothesis.
+   
+```{r}
+library(tidyverse)
+library(gapminder)
+library(infer)
+
+us_pres_winners <- read_csv("final-data/winner_final_data.csv")
+us_pres_polls <- read_tsv("final-data/Dataset-20180111.tab") 
+
+us_elec_polls <- us_pres_polls |>
+  left_join(us_pres_winners) |>
+  select(country, daysbeforeED, election, electionyr, partyid, poll_, polldate, winnerparty) |>
+  filter(country == "United States",
+         election == "Presidential",
+         partyid == winnerparty)
+```
+
+```{r}
+poll_results_histo <- ggplot(data = us_elec_polls,
+       mapping = aes(x = poll_)) +
+  geom_histogram(fill = "blue", color = "black") +
+  theme_classic()
+poll_results_histo
+```
+The spread of poll results for the future winner of the election appears to have a normal distribution, with the mean between 40% and 50%.
+
+## Results
+
+```{r}
+pres_predict_plot <- ggplot(us_elec_polls, mapping = aes(x = daysbeforeED,
+                                                                y = poll_)) +
+  geom_point(mapping = aes()) +
+  labs(
+        x = "Days Between Election and Poll",
+        y = "Predicted Percentage of Votes",
+        title = "Expected Percentage of Votes for U.S. Presidential Election Winners",
+        subtitle = "Based on Dates of Polls",
+        caption = "Will Jennings & Christopher Wlezien"
+      ) +
+  geom_point(color = "blue") +
+  geom_smooth(color = "red", method = lm, se = FALSE) +
+  theme_classic()
+pres_predict_plot
+```
+
+```{r}
+fit <- lm(poll_ ~ daysbeforeED, data = us_elec_polls)
+fit |> summary()
+```
 
 
 
