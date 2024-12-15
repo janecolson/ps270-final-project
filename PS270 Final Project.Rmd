@@ -8,65 +8,93 @@ output:
     sel_contained: false
 ---
 
-## Project Thoughts
-
-I am interested in looking at data analyzing which of the two major parties (Democratic or Republican) American voters tend to say they prefer in presidential elections as they come closer to the election. I am curious as to whether or not one of the two parties is favored more in the period nearest to the election versus the beginning of the election cycle across different elections. I hope to see this through American presidential pre-election polls.
-
-## Tentative Proposal
-
-Are American voters more attracted to a certain party as the presidential election comes closer? In this study, I plan to examine pre-election polls regarding American presidential elections. I hypothesize that as a presidential election draws nearer, a greater amount of polls will favor the candidate of one of the two main parties. When there is more time between polls and the presidential election, I suspect that polls will be more spread out in their predictions of which candidate will be elected. My sample is comprised of pre-election polls from American presidential elections between 1942 and 2017. My unit of analysis is the results of the pre-election polls from one of the elections between 1942 and 2017 (e.g., the 2016 presidential election). The explanatory variable of interest is the amount of days away from the election the poll is taken. The variable is coded in accordance with the amount of days before the election day. For instance, if the variable were coded =1462, it would mean that the poll was taken 1,462 days before election day. My outcome variable is the candidate who is predicted to win the election in the pre-election polls, specifically which party they run under. The variable is coded =1 for the Democratic candidate and =2 for the Republican candidate. This variable is measured from Christopher Wlezien's data set on national polls assessing citizens' vote intentions in 45 countries between 1942 and 2017. If I observe a greater amount of polls predicting one candidate to win over the other (e.g., more polls predict the Democratic candidate to win than the Republican candidate) closer to the election date, this would provide support for my hypothesis. If, on the other hand, I observe more even amounts of polls predicting either the Democratic or Republican candidate to win, this would provide evidence against my hypothesis. When I run my regression of the predictions of pre-election polls on the days before election day variable, a positive, significant coefficient closer to 1 or 2 would indicate support for my hypothesis.
-
-## Data Visualization
-
-```{r}
-library(tidyverse)
-us_pres_polls_2016 <- read_tsv("final-data/Dataset-20180111.tab") |>
-  filter(country == "United States",
-         election == "Presidential",
-         electionyr == "2016")
-
-pres_2016_plot <- ggplot(us_pres_polls_2016, mapping = aes(x = polldate,
-                                                                y = poll_)) +
-  geom_point(mapping = aes(color = partyid)) +
-  facet_wrap(~ partyid) +
-  labs(
-        x = "Date of Poll",
-        y = "Predicted Percentage of Votes",
-        title = "Expected Percentage of Votes for Each Candidate",
-        subtitle = "Based on Dates of Polls",
-        caption = "Will Jennings & Christopher Wlezien"
-      ) +
-  theme(panel.border = element_blank(), panel.grid.major = element_blank(),
-  panel.grid.minor = element_blank())
-pres_2016_plot
-```
-
 ## Analysis
 
 The graphs below show that as the time between the 2012 election and polling decreased, the amount of votes predicted for both the Democratic and Republican candidates increased. This indicates that support did not shift toward one individual candidate and instead, support in the polls increased because of other factors. One of these factors could be that the amount of polls taken increased as the amount of days until the election decreased, so there were more opportunities for those included in the polls to say they planned to vote for either the Democratic or Republican candidate.
 
+
+## Introduction
+
+  Are American voters more attracted to the future winner as the presidential election comes closer? In this study, I plan to examine pre-election polls regarding American presidential elections.  I hypothesize that as a United States presidential election draws nearer, a greater amount of polls will favor the candidate who ends up winning the election.  The null hypothesis is that how close the poll was taken to the election does not impact the amount of votes the future winner is predicted to get.  When there is more time between polls and the presidential election, I suspect that polls will be more spread out in their predictions of whether or not the future winner will be elected.  This report is interesting because it shows how voters' intentions change over time; in addition, it shows how often the polls correctly predict the winner of the election. This can be useful to politicians, as they can use this information to see how effective campaigning is and determine where they should focus their efforts, as well as the likelihood of winning an election based on what the polls predict. This can also be useful to voters, as it can help them predict who will win, perhaps mobilizing them if the candidate they do not prefer is predicted to win, as well as help them prepare for the predicted winner to take office.
+
+## Data
+
+  The data used for this report is a data set from a project led by principal investigators Will Jennings of the University of Southampton and Christopher Wlezien of the University of Texas at Austin.  The data set consists of over 30,000 pre-election polls in national elections from 45 countries since 1942 to the present, collected from survey organizations, making this a survey study.  My sample is comprised of pre-election polls from American presidential elections between 1952 and 2017 that ask which candidate the respondent intended to vote for; the Democratic candidate is recorded as candidate 1 and the Republican candidate is recorded as candidate 2. I created an additional data set of all of the winners of U.S. presidential elections from 1952-2017 that is coded in the same way as the data set of pre-election polls (1 for a Democratic presidential election winner, 2 for a Republican presidential election winner) and merged it with the previous data set, filtering the new merged data set to only contain information regarding the winners of each of the presidential elections from 1952-2017.
+  
+  My unit of analysis is the results of the pre-election polls from one of the elections between 1952 and 2017 (e.g., the 2016 presidential election).  The explanatory variable of interest/independent variable is the amount of days away from the election the poll is taken.  The variable is coded in accordance with the amount of days before the election day.  For instance, if the variable were coded =1462, it would mean that the poll was taken 1,462 days before election day.  My outcome variable/dependent variable is the the amount of votes the future winner is expected to get according to the polls. The variable is coded =0.01 for 1% of votes, =0.02 for 2% of votes, etc.  This variable is measured from Christopher Wlezien's data set on national polls assessing citizens' vote intentions in 45 countries between 1942 and 2017. If I observe a greater amount of polls predicting the future winner of the election to win the election closer to the election date, this would provide support for my hypothesis. If, on the other hand, I observe less or the same amounts of polls predicting the future winner to win, this would provide evidence against my hypothesis. When I run my regression of the predictions of pre-election polls on the days before election day variable, a negative, significant coefficient close to -1 would indicate support for my hypothesis as the independent variable moves backward in time.
+
 ```{r}
-us_pres_polls_2012 <- read_tsv("final-data/Dataset-20180111.tab") |>
+library(tidyverse)
+library(gapminder)
+library(infer)
+library(broom)
+
+us_pres_winners <- read_csv("final-data/winner_final_data.csv")
+us_pres_polls <- read_tsv("final-data/Dataset-20180111.tab") 
+
+us_elec_polls <- us_pres_polls |>
+  left_join(us_pres_winners) |>
+  select(country, daysbeforeED, election, electionyr, partyid, poll_, polldate, winnerparty) |>
   filter(country == "United States",
          election == "Presidential",
-         electionyr == "2012")
+         partyid == winnerparty)
+```
 
-pres_2012_plot <- ggplot(us_pres_polls_2012, mapping = aes(x = polldate,
+```{r}
+poll_results_histo <- ggplot(data = us_elec_polls,
+       mapping = aes(x = poll_)) +
+  geom_histogram(fill = "blue", color = "black") +
+  theme_classic()
+poll_results_histo
+```
+  The spread of poll results for the future winner of the election appears to have a normal distribution, with the mean appearing to be between 40% and 50%.
+
+## Results
+
+```{r}
+pres_predict_plot <- ggplot(us_elec_polls, mapping = aes(x = daysbeforeED,
                                                                 y = poll_)) +
-  geom_point(mapping = aes(color = partyid)) +
-  facet_wrap(~ partyid) +
+  geom_point(mapping = aes()) +
   labs(
-        x = "Date of Poll",
+        x = "Days Between Election and Poll",
         y = "Predicted Percentage of Votes",
-        title = "Expected Percentage of Votes for Each 2012 Presidential Candidate",
-        subtitle = "Based on Dates of Polls",
+        title = "Expected Percentage of Votes for U.S. Presidential Election Winners",
+        subtitle = "Based on the Amount of Days Between the Presidential Election & Polls",
         caption = "Will Jennings & Christopher Wlezien"
       ) +
-  geom_smooth(color = "red") +
-  theme(panel.border = element_blank(), panel.grid.major = element_blank(),
-  panel.grid.minor = element_blank())
-pres_2012_plot
+  geom_point(color = "blue") +
+  geom_smooth(color = "red", method = lm, se = FALSE) +
+  theme_classic()
+pres_predict_plot
 ```
+
+```{r}
+fit <- lm(poll_ ~ daysbeforeED, data = us_elec_polls)
+fit |> summary()
+
+tidy(fit) |>
+  knitr::kable(digits = 3)
+```
+  The scatter plot of the data shows a decrease in the percentage of votes expected for the future winners of U.S. presidential elections as the amount of days between the date of the election and the date each poll was taken increases.  Because the days before election (daysbeforeED) variable goes backward in time, this indicates an increase in the expected percentage of the votes for the actual winners of the elections, as when the amount of days between the date of the election and the date each poll was taken decreases, it means that the day of the election is drawing nearer.  The red line represents the decrease in the expected percentage of votes for the future winner of the election in each poll as the amount of days between the date of the poll and the date of the election increases.  The line is seen to be moving downward, indicating this decrease in the expected percentage of votes and support for my hypothesis, but it is also important to take into account the regression of the data.
+  
+  The regression above has an intercept of 47.416 and a slope of -0.004, indicating that when the days between the date of the election and the date of polls is 0, I expect the candidate who wins to garner 47.416% of vote and I also expect the candidate to see a decrease in votes by 0.004% as the amount of days between the date of the election and the date of polls increases by one day, holding the days before the election constant.  The regression gives a p-value of almost 0, meaning that at all of the common levels of significance, those being alpha = 0.1, alpha = 0.05, and alpha = 0.01, the p-value of almost 0 is statistically significant as it is below all of those values.  This also means that likeliness that these results occurred by chance is close to 0.  This allows me to reject the null hypothesis, which states that the amount of days between the date of the polls and the date of the election does not affect the predicted amount of votes for the eventual winners of U.S. presidential elections.  Because the p-value given by the regression is statistically significant and the effect of the days between the election and polls on the predicted percentage of votes for the eventual winner should be interpreted causally.
+  
+## Conclusion
+
+  From the scatter plot and regression, I found support for my hypothesis that as a U.S. presidential election draws nearer, a greater amount of polls will favor the candidate who ends up winning the election.  The downward direction of the scatter plot shows visual support for the hypothesis, as it shows the expected percentage of votes for the eventual winner decreasing as the number of days between the election and the date of the polls increases.  The regression shows that there is an expected decrease in the predicted percentage of votes for the eventual winner as the amount of days between the election's date and the date the polls were taken on increases by one day.  With a p-value close to 0, the regression shows that the likelihood of the results that support my hypothesis occurring by chance is almost 0.  Although I would have preferred for the slope to be closer to -1, it still showed support for my hypothesis, along with the rest of the regression and the scatter plot.  This analysis does have limitations, with one of these being that it only included data from 1952-2017.  If the data had included elections before 1952 and after 2017, it might have shown less support for my hypothesis or none at all.  This analysis also does not account for possible confounding variables, such as the amount of third-party candidates and their predicted percentages of votes, which could causes decreases in the predicted percentages of votes for both the Democratic and Republican candidates.  If I had more time and money, I would improve this analysis by gathering data from a wider time frame of when U.S. presidential pre-election polls were first taken to 2024.  I would also take more time to account for possible confounding variables to ensure that any support I see for my hypothesis is because of a causal relationship rather than correlation.  Overall, it was interesting to find support for my hypothesis and analyze polls over time.
+  
+## Citations
+
+
+
+
+
+
+
+
+
+
+
 
 
 
