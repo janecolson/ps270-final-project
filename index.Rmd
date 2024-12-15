@@ -32,18 +32,18 @@ us_elec_polls <- us_pres_polls |>
   filter(country == "United States",
          election == "Presidential",
          partyid == winnerparty)
-```
 
-```{r}
 poll_results_histo <- ggplot(data = us_elec_polls,
        mapping = aes(x = poll_)) +
   geom_histogram(fill = "blue", color = "black") +
   labs(x = "Predicted Percentage of Votes for the Winning Candidate",
        y = "Number of Polls",
-       title = "Number of Polls for Predicted Percentages of Winning Votes") +
+       title = "Number of Polls for Predicted Percentages of Winning Votes",
+       caption = "Will Jennings & Christopher Wlezien") +
   theme_classic()
 poll_results_histo
 ```
+
   The spread of poll results for the future winner of the election appears to have a normal distribution and is not skewed, with the mean appearing to be between 40% and 50%.
 
 ## Results
